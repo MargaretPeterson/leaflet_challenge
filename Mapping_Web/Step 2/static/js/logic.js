@@ -1,7 +1,4 @@
-// We create the tile layers that will be the selectable backgrounds of our map.
-// One for our grayscale background.
-
-var apiKey = "AIzaSyABwxJAMZ3B2wp87nbMZBuvz8UPkxhD1ig";
+var apiKey = "pk.eyJ1IjoibWVnZWxsZW5wZXRlcnNvbiIsImEiOiJjazhnb2JmOHowM25xM21vOTV4dmc5bHZyIn0.fvumS6wFjvwaSHfaBDdDQg";
 
 var graymap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
     attribution: "Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, Imagery © <a href='https://www.mapbox.com/'>Mapbox</a>",
@@ -24,8 +21,7 @@ var outdoors = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png
     accessToken: apiKey
 });
 
-// We then create the map object with options. Adding the tile layers we just
-// created to an array of layers.
+// Create the map object with options. 
 var map = L.map("mapid", {
     center: [
         40.7, -94.5
@@ -37,13 +33,11 @@ var map = L.map("mapid", {
 // Adding our 'graymap' tile layer to the map.
 graymap.addTo(map);
 
-// We create the layers for our two different sets of data, earthquakes and
-// tectonicplates.
+// Layers
 var tectonicplates = new L.LayerGroup();
 var earthquakes = new L.LayerGroup();
 
-// Defining an object that contains all of our different map choices. Only one
-// of these maps will be visible at a time!
+// Define an object that contains all of our different map choices
 var baseMaps = {
     Satellite: satellitemap,
     Grayscale: graymap,
@@ -158,21 +152,20 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
         return div;
     };
 
-    // We add our legend to the map.
+
     legend.addTo(map);
 
-    // Here we make an AJAX call to get our Tectonic Plate geoJSON data.
+
     d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json",
         function(platedata) {
-            // Adding our geoJSON data, along with style information, to the tectonicplates
-            // layer.
+
             L.geoJson(platedata, {
                     color: "orange",
                     weight: 2
                 })
                 .addTo(tectonicplates);
 
-            // Then add the tectonicplates layer to the map.
+
             tectonicplates.addTo(map);
         });
 });
